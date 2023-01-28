@@ -98,7 +98,6 @@
             this.listViewlampe.TabIndex = 1;
             this.listViewlampe.UseCompatibleStateImageBehavior = false;
             this.listViewlampe.View = System.Windows.Forms.View.Details;
-            this.listViewlampe.SelectedIndexChanged += new System.EventHandler(this.listViewlampe_SelectedIndexChanged);
             // 
             // column_id
             // 

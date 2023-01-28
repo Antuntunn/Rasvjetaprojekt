@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="ProjektRasvjeta.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="ProjektRasvjeta.exe" version="1.0.0.0" publicKeyToken="60042b33f1a83ba8" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
     <assemblyIdentity name="ProjektRasvjeta" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -114,14 +114,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProjektRasvjeta.exe" size="30648">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProjektRasvjeta.exe" size="30136">
       <assemblyIdentity name="ProjektRasvjeta" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>5gXAeGc7vnZqSVupNXaPn/Gya0/MJtB0JReTPqG3Pd4=</dsig:DigestValue>
+        <dsig:DigestValue>SvEMYVXaJeWpMZwDLRguze7u/DlzG7CHZE3M8EHbEA4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -194,4 +194,4 @@
       <dsig:DigestValue>HYtWL7QV3xWP6nHorrJWq/Ud6Lg5XS2luXstc92Kdok=</dsig:DigestValue>
     </hash>
   </file>
-</asmv1:assembly>
+<publisherIdentity name="CN=ANTUN-PC\Antun" issuerKeyHash="a8a9efb60ad663d60bde692c9a73663cab886944" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>22+qBOyHfGF3EC1A0vIpAwe4iw+nbzaAzN7C4km+LNo=</DigestValue></Reference></SignedInfo><SignatureValue>C4SoWxdVQzQ0IrkJlsLTYhngitvnbBgeZNqSbOFl17lT91Hf7GA0O//DFAbaIHN6/GSfDGacFryT2OuiRJoIbVSenfwWNbyOzSPt/n3WokJyN/ZefhEVNM/hTQVmB1kb1t9wt1EMWMThfU5OlQLIf1pXuun+sDVEmI8F+5N09Mw=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>0hgYSyNv1O8T9di4iD6MEDY60JA1dCCs6vix8yhUG7JpA6KR/o6O1WTT3XV7k6RMYkoF6qLlWf3LKjhC/liwq5Gv3OYjvtKfD/w/nOhmDThteu7fY4WmY/rhJihZVJoUdTjzlo3sPY+8vOIdvhFbqBUv1A0f8XwsP6Ld+i8u8H0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="da2cbe49e2c2decc80366fa70f8bb8070329f2d2402d1077617c87ec04aa6fdb" Description="" Url=""><as:assemblyIdentity name="ProjektRasvjeta.exe" version="1.0.0.0" publicKeyToken="60042b33f1a83ba8" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=ANTUN-PC\Antun</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>xPEif0xhGuypJoi5NSBUep2oZpgOtA7iFUvOXF8eqSw=</DigestValue></Reference></SignedInfo><SignatureValue>qDjPHq/X2fhdtImkMNutlm0tPCOzyZQyUARTHiOQBBWmvdefUrPtoFrr/xyPrVVraOFv6wMs44lYr03kWarU5p0f1dOkV1UWHbD43m4fD5HLexzcKwkHZhWXERiG+LXVGVVTPww+jluI8sov7TE8MPxJd0mDTjLeuLcjaEv5PVs=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>0hgYSyNv1O8T9di4iD6MEDY60JA1dCCs6vix8yhUG7JpA6KR/o6O1WTT3XV7k6RMYkoF6qLlWf3LKjhC/liwq5Gv3OYjvtKfD/w/nOhmDThteu7fY4WmY/rhJihZVJoUdTjzlo3sPY+8vOIdvhFbqBUv1A0f8XwsP6Ld+i8u8H0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB0TCCATqgAwIBAgIQEW75A59Hn6NKvBN41GiAVjANBgkqhkiG9w0BAQsFADAnMSUwIwYDVQQDHhwAQQBOAFQAVQBOAC0AUABDAFwAQQBuAHQAdQBuMB4XDTIzMDEyNzIyMTA1MFoXDTI0MDEyODA0MTA1MFowJzElMCMGA1UEAx4cAEEATgBUAFUATgAtAFAAQwBcAEEAbgB0AHUAbjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA0hgYSyNv1O8T9di4iD6MEDY60JA1dCCs6vix8yhUG7JpA6KR/o6O1WTT3XV7k6RMYkoF6qLlWf3LKjhC/liwq5Gv3OYjvtKfD/w/nOhmDThteu7fY4WmY/rhJihZVJoUdTjzlo3sPY+8vOIdvhFbqBUv1A0f8XwsP6Ld+i8u8H0CAwEAATANBgkqhkiG9w0BAQsFAAOBgQAJvynHJ1ncnJL41nanAubN+yVRIlFAsYU93eqnJl30r5RVGEnU0EIv1MMjPtQl4IclktoiMZ7OcvXKHG3zctPBgAHiIZUzilK9M1Wrvw9sFPMYbR1fyhiVWkuxW/wiAopysRs5udpEfL4YkBuyMCkxm23DYVTrupXhSDnGBDQyHA==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

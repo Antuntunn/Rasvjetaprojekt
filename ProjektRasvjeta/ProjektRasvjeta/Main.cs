@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace ProjektRasvjeta
 {
@@ -29,11 +23,6 @@ namespace ProjektRasvjeta
         {
             this.login = login;
             InitializeComponent();
-        }
-
-        private void onoffbutton_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -76,82 +65,71 @@ namespace ProjektRasvjeta
                             }
                         }
 
-                        int idz = -1;
-                        int pamti = 0;
-                        Random random = new Random();
-
-                        pamti = 1;
                         string updat = $"UPDATE svjetlo SET snaga = 0";
                         using (MySqlCommand cmd = new MySqlCommand(updat, connection))
                             cmd.ExecuteNonQuery();
 
+                        int idz = -1;
+                        Random random = new Random();
 
                         foreach (Data data in dataList)
                         {
                             string genaktivan;
-                            string updatesenzor = "";
-                            string snaga = "0";
+                            string updatesenzor;
+                            string snaga = "25";
 
                             double randombroj = random.NextDouble();
 
                             if (data.ZonaID != idz)
                             {
                                 idz = data.ZonaID;
-                                pamti = 0;
                             }
 
-                            if (data.Svjetlo > 75 || data.Status != "ok")
+                            if (data.Svjetlo > 90 || data.Status != "ok")
                             {
-                                updatesenzor = $"UPDATE senzor SET aktivan = '0' WHERE id = {data.ID.ToString()}";
-
+                                updatesenzor = $"UPDATE senzor SET aktivan = '0' WHERE id = {data.ID}";
                                 using (MySqlCommand cmd = new MySqlCommand(updatesenzor, connection))
                                     cmd.ExecuteNonQuery();
-                                
+
+                                string updatelampa = $"UPDATE svjetlo SET snaga = 0 WHERE zona_id = {data.ZonaID}";
+                                using (MySqlCommand cmd = new MySqlCommand(updatelampa, connection))
+                                    cmd.ExecuteNonQuery();
                                 continue;
                             }
                             if (randombroj < 0.9)
                             {
                                 genaktivan = "0";
                                 snaga = "0";
-                            }                            
+                            }
                             else
                             {
                                 genaktivan = "1";
-                                snaga = "75";
+                                snaga = "90";
                             }
 
-                            if (snaga == "75")
+                            if (snaga == "90")
                             {
-                                pamti = 1;
-                                string updatelampa = $"UPDATE svjetlo SET snaga = {snaga} WHERE zona_id = {data.ZonaID.ToString()}";
+                                string updatelampa = $"UPDATE svjetlo SET snaga = {snaga} WHERE zona_id = {data.ZonaID}";
                                 using (MySqlCommand cmd = new MySqlCommand(updatelampa, connection))
                                     cmd.ExecuteNonQuery();
                             }
 
-                            updatesenzor = $"UPDATE senzor SET aktivan = '{genaktivan}' WHERE id = {data.ID.ToString()}";
+                            updatesenzor = $"UPDATE senzor SET aktivan = '{genaktivan}' WHERE id = {data.ID}";
                             using (MySqlCommand cmd = new MySqlCommand(updatesenzor, connection))
                                 cmd.ExecuteNonQuery();
-                            
+
                         }
+                        updat = $"UPDATE svjetlo SET snaga = 0 WHERE status != 'ok' ";
+                        using (MySqlCommand cmd = new MySqlCommand(updat, connection))
+                            cmd.ExecuteNonQuery();
                         connection.Close();
                     }
                     update();
-                    
-                Thread.Sleep(5000);
-            }
+
+                    Thread.Sleep(10000);
+                }
             }).Start();
-    } 
-
-        private void onoffbuttonse_Click(object sender, EventArgs e)
-        {
-
         }
-
-        private void listViewlampe_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttondodajz_Click(object sender, EventArgs e)
         {
 
@@ -188,166 +166,115 @@ namespace ProjektRasvjeta
             {
                 MessageBox.Show(ex.ToString());
             }
+
         }
 
         private void buttondodaj_Click(object sender, EventArgs e)
         {
-            try
+            string connectionString = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string conn = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
-                MySqlConnection con = new MySqlConnection();
-                con.ConnectionString = conn;
-                con.Open();
-
-                int idz;
-                string sql = "SELECT id FROM zona WHERE ime = '"+ comboBox1.Text+"';";
-                MySqlCommand cmd = new MySqlCommand(sql, con);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-                
-                idz = reader.GetInt32(0);
-                reader.Close();
-                sql = "INSERT INTO `svjetlo` (`status`, `aktivan`, `zona_id`, `upaljno`, `snaga`) VALUES ('disconnected', '0', '" +idz.ToString()+"', '0', '0');";
-                cmd = new MySqlCommand(sql, con);
-                cmd.ExecuteReader();
-                con.Close();
+                connection.Open();
+                int idzone = 1;
+                using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM zona WHERE ime = '" + comboBox1.Text + "';", connection))
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                    while (reader.Read())
+                        idzone = reader.GetInt32(0);
+                string sql = "INSERT INTO `svjetlo` (`status`, `zona_id`, `upaljeno`, `snaga`) VALUES ('disconnected', '" + idzone.ToString() + "', '0', '0');";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    cmd.ExecuteNonQuery();
                 update();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Dodana je lampa!");
             }
         }
 
         private void buttondodajse_Click(object sender, EventArgs e)
         {
-            try
+            string connectionString = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string conn = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
-                MySqlConnection con = new MySqlConnection();
-                con.ConnectionString = conn;
-                con.Open();
-
-                string sql = "INSERT INTO `rasvjetadb`.`senzor` (`status`, `aktivan`, `zona_id`, `svjetlo`) VALUES ('disconnected', '0', '"+comboBox2.Text+"', '0');";
-                MySqlCommand cmd = new MySqlCommand(sql, con);
-                cmd.ExecuteReader();
-                con.Close();
+                connection.Open();
+                int idzone = 1;
+                using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM zona WHERE ime = '" + comboBox2.Text + "';", connection))
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                    while (reader.Read())
+                        idzone = reader.GetInt32(0);
+                string sql = "INSERT INTO `rasvjetadb`.`senzor` (`status`, `aktivan`, `zona_id`, `svjetlo`) VALUES ('ok', '0', '" + idzone.ToString() + "', '0');";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    cmd.ExecuteNonQuery();
                 update();
+                MessageBox.Show("Dodan je senzor!");
             }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            try
+            string connectionString = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string conn = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
-                MySqlConnection con = new MySqlConnection();
-                con.ConnectionString = conn;
-                con.Open();
-                int idz;
-                string sql = "SELECT id FROM zona WHERE ime = '" + comboBox3.Text + "';";
-                MySqlCommand cmd = new MySqlCommand(sql, con);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                idz = reader.GetInt32(0);
-                reader.Close();
-                sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = 'Izvanredno', `snaga` = '100' WHERE status = 'ok' and zona_id = '" + idz.ToString()+"';";
-                cmd = new MySqlCommand(sql, con);
-                cmd.ExecuteReader();
-                con.Close();
+                connection.Open();
+                int idzone = 1;
+                using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM zona WHERE ime = '" + comboBox3.Text + "';", connection))
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                    while (reader.Read())
+                        idzone = reader.GetInt32(0);
+                string sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = 'Izvanredno', `snaga` = '100' WHERE status = 'ok' and zona_id = '" + idzone.ToString() + "';";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    cmd.ExecuteNonQuery();
                 update();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show($"Izvanredno stanje upaljeno u zoni {idzone}!");
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try
+            string connectionString = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string conn = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
-                MySqlConnection con = new MySqlConnection();
-                con.ConnectionString = conn;
-                con.Open();
-                int idz;
-                string sql = "SELECT id FROM zona WHERE ime = '" + comboBox3.Text + "';";
-                MySqlCommand cmd = new MySqlCommand(sql, con);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                idz = reader.GetInt32(0);
-                reader.Close();
-                sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = 'Ok', `snaga` = '25' WHERE status = 'Izvanredno' and zona_id = '" + idz.ToString() + "';";
-                cmd = new MySqlCommand(sql, con);
-                cmd.ExecuteReader();
-                con.Close();
+                connection.Open();
+                int idzone = 1;
+                using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM zona WHERE ime = '" + comboBox3.Text + "';", connection))
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                    while (reader.Read())
+                        idzone = reader.GetInt32(0);
+                string sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = 'Ok', `snaga` = '25' WHERE status = 'Izvanredno' and zona_id = '" + idzone.ToString() + "';";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    cmd.ExecuteNonQuery();
                 update();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show($"Izvanredno stanje ugašeno u zoni {idzone}!");
             }
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            try
+            string sql;
+            if (radioButton3.Checked)
+                sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = '" + comboBox4.Text + "', upaljeno = '1'  WHERE id = '" + comboBox5.Text.ToString() + "'; ";
+            else
+                sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = '" + comboBox4.Text + "', upaljeno = '0' WHERE id = '" + comboBox5.Text.ToString() + "'; ";
+            string connectionString = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string conn = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
-                MySqlConnection con = new MySqlConnection();
-                con.ConnectionString = conn;
-                con.Open();
-                string sql;
-                if (radioButton3.Checked)
-                {
-                    sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = '" + comboBox4.Text + "', upaljeno = '1'  WHERE id = '" + comboBox5.Text.ToString() + "'; ";
-                }
-                else
-                {
-                    sql = "UPDATE `rasvjetadb`.`svjetlo` SET `status` = '" + comboBox4.Text + "', upaljeno = '0' WHERE id = '" + comboBox5.Text.ToString() + "'; ";
-                }
-                MySqlCommand cmd = new MySqlCommand(sql, con);
-                cmd.ExecuteReader();
-                con.Close();
+                connection.Open();
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    cmd.ExecuteNonQuery();
                 update();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show($"Lampa je updateana!");
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            try
+            string connectionString = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string conn = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
-                MySqlConnection con = new MySqlConnection();
-                con.ConnectionString = conn;
-                con.Open();
-                
-                string sql = "UPDATE `rasvjetadb`.`senzor` SET `status` = '"+comboBox6.Text+"' WHERE id = '" + comboBox7.Text + "';";
-                MySqlCommand cmd = new MySqlCommand(sql, con);
-                cmd.ExecuteReader();
-                con.Close();
+                connection.Open();
+                string sql = "UPDATE `rasvjetadb`.`senzor` SET `status` = '" + comboBox6.Text + "' WHERE id = '" + comboBox7.Text + "'; ";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    cmd.ExecuteNonQuery();
                 update();
+                MessageBox.Show($"Senzor je updatean!");
             }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }       
+        }
 
         public void update()
         {
@@ -356,131 +283,100 @@ namespace ProjektRasvjeta
             comboBox1.Items.Clear();
             comboBox2.Items.Clear();
             comboBox3.Items.Clear();
-            comboBox4.Items.Clear();
+            comboBox7.Items.Clear();
+
             string connstring = "server=localhost;uid=root;pwd=1234;database=rasvjetadb";
             using (MySqlConnection con = new MySqlConnection(connstring))
             {
                 con.Open();
                 string sql = "SELECT * FROM svjetlo";
-                using (MySqlCommand cmd = new MySqlCommand(sql, con))
-                {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlCommand command = new MySqlCommand(sql, con))
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32(0);
-                            string status = reader.GetString(1);
-                            int zona_id = reader.GetInt32(2);
-                            int upaljen = reader.GetInt32(3);
-                            string snaga = reader.GetInt32(4).ToString() + "%";
+                        int id = reader.GetInt32(0);
+                        string status = reader.GetString(1);
+                        int zona_id = reader.GetInt32(2);
+                        int upaljen = reader.GetInt32(3);
+                        string snaga = reader.GetInt32(4).ToString() + "%";
 
-                            if (status == "kvar")
-                                status = "U kvaru";
-                            else if (status == "popravak")
-                                status = "U popravku";
+                        if (status == "kvar")
+                            status = "U kvaru";
+                        else if (status == "popravak")
+                            status = "U popravku";
 
-                            ListViewItem item = new ListViewItem(id.ToString());
-                            if (upaljen == 0)
-                                item.SubItems.Add("Off");
-                            else
-                                item.SubItems.Add("On");
-                            item.SubItems.Add(status);
-                            item.SubItems.Add(zona_id.ToString());
-                            item.SubItems.Add(snaga);
-
-                            listViewlampe.Items.Add(item);
-                        }
-                    }
-                }
-            }
-            using (MySqlConnection con = new MySqlConnection(connstring))
-            {
-                con.Open();
-                string sql = "SELECT * FROM senzor";
-                using (MySqlCommand cmd = new MySqlCommand(sql, con))
-                {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32(0);
-                            string status = reader.GetString(1);
-                            int aktivan = reader.GetInt32(2);
-                            int svjetlo_id = reader.GetInt32(3);
-                            int svjetlost = reader.GetInt32(4);
-                            string svjetlostpo = svjetlost.ToString() + "%";
-                            string aktivann = "";
-
-                            if (status == "kvar")
-                                status = "U kvaru";
-                            else if (status == "popravak")
-                                status = "U popravku";
-
-                            if (aktivan == 0)
-                                aktivann = "Ne";
-                            else
-                                aktivann = "Da";
-
-                            ListViewItem item = new ListViewItem(id.ToString());
+                        ListViewItem item = new ListViewItem(id.ToString());
+                        if (upaljen == 0)
+                            item.SubItems.Add("Off");
+                        else
                             item.SubItems.Add("On");
-                            item.SubItems.Add(status);
-                            item.SubItems.Add(aktivann);
-                            item.SubItems.Add(svjetlo_id.ToString());
-                            item.SubItems.Add(svjetlostpo);
+                        item.SubItems.Add(status);
+                        item.SubItems.Add(zona_id.ToString());
+                        item.SubItems.Add(snaga);
 
-                            listViewse.Items.Add(item);
-
-                        }
+                        listViewlampe.Items.Add(item);
                     }
-                }
-            }
-            using (MySqlConnection con = new MySqlConnection(connstring))
-            {
-                con.Open();
+                using (MySqlCommand command = new MySqlCommand("SELECT * FROM senzor", con))
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        string status = reader.GetString(1);
+                        int aktivan = reader.GetInt32(2);
+                        int svjetlo_id = reader.GetInt32(3);
+                        int svjetlost = reader.GetInt32(4);
+                        string svjetlostpo = svjetlost.ToString() + "%";
+                        string aktivann = "";
+
+                        if (status == "kvar")
+                            status = "U kvaru";
+                        else if (status == "popravak")
+                            status = "U popravku";
+
+                        if (aktivan == 0)
+                            aktivann = "Ne";
+                        else
+                            aktivann = "Da";
+
+                        ListViewItem item = new ListViewItem(id.ToString());
+                        item.SubItems.Add("On");
+                        item.SubItems.Add(status);
+                        item.SubItems.Add(aktivann);
+                        item.SubItems.Add(svjetlo_id.ToString());
+                        item.SubItems.Add(svjetlostpo);
+                        listViewse.Items.Add(item);
+                    }
                 using (MySqlCommand command = new MySqlCommand("SELECT id FROM svjetlo", con))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            string value = reader.GetString(0);                          
-                            comboBox4.Items.Add(value);
-                        }
+                        string value = reader.GetString(0);
+                        comboBox4.Items.Add(value);
                     }
-                }
-            }
-            using (MySqlConnection con = new MySqlConnection(connstring))
-            {
-                con.Open();
                 using (MySqlCommand command = new MySqlCommand("SELECT ime FROM zona", con))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            string value = reader.GetString(0);
-                            comboBox2.Items.Add(value);
-                            comboBox1.Items.Add(value);
-                            comboBox3.Items.Add(value);
-                        }
+                        string value = reader.GetString(0);
+                        comboBox2.Items.Add(value);
+                        comboBox1.Items.Add(value);
+                        comboBox3.Items.Add(value);
                     }
-                }
-            }
-            using (MySqlConnection con = new MySqlConnection(connstring))
-            {
-                con.Open();
-                using (MySqlCommand command = new MySqlCommand("SELECT id FROM zona", con))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                using (MySqlCommand command = new MySqlCommand("SELECT id FROM senzor", con))
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            string value = reader.GetInt32(0).ToString();
-                            comboBox7.Items.Add(value);  
-                        }
+                        string value = reader.GetInt32(0).ToString();
+                        comboBox7.Items.Add(value);
                     }
-                }
             }
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
+            comboBox5.SelectedIndex = 0;
+            comboBox6.SelectedIndex = 0;
+            comboBox7.SelectedIndex = 0;
         }
     }
 }
