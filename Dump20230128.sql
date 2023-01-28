@@ -60,7 +60,7 @@ CREATE TABLE `senzor` (
   `svjetlo` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `senzor` (
 
 LOCK TABLES `senzor` WRITE;
 /*!40000 ALTER TABLE `senzor` DISABLE KEYS */;
-INSERT INTO `senzor` VALUES (1,'ok',1,1,0),(2,'ok',0,1,0),(3,'ok',0,1,8),(4,'ok',0,1,5),(5,'ok',0,1,23),(6,'ok',0,1,6),(7,'ok',0,1,1),(8,'ok',0,2,4),(9,'ok',0,2,5),(10,'ok',0,2,7),(11,'ok',1,2,0),(12,'kvar',0,2,0),(13,'ok',1,2,6),(14,'popravak',0,2,0),(15,'ok',0,2,4),(16,'ok',0,2,1),(17,'ok',0,2,13),(18,'ok',1,2,23);
+INSERT INTO `senzor` VALUES (1,'kvar',0,1,0),(2,'ok',1,1,0),(3,'ok',1,1,8),(4,'ok',0,1,5),(5,'ok',0,1,23),(6,'ok',0,1,6),(7,'ok',0,1,1),(8,'ok',0,2,4),(9,'ok',0,2,5),(10,'ok',0,2,7),(11,'ok',0,2,0),(12,'kvar',0,2,0),(13,'ok',0,2,6),(14,'popravak',0,2,0),(15,'ok',1,2,4),(16,'ok',0,2,1),(17,'ok',0,2,13),(18,'ok',0,2,23),(31,'ok',0,1,0);
 /*!40000 ALTER TABLE `senzor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,11 +84,11 @@ CREATE TABLE `svjetlo` (
   `id` int NOT NULL AUTO_INCREMENT,
   `status` enum('ok','kvar','popravak','Disconnected','Izvanredno') NOT NULL,
   `zona_id` int NOT NULL,
-  `upaljno` int DEFAULT NULL,
+  `upaljeno` int DEFAULT NULL,
   `snaga` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +97,7 @@ CREATE TABLE `svjetlo` (
 
 LOCK TABLES `svjetlo` WRITE;
 /*!40000 ALTER TABLE `svjetlo` DISABLE KEYS */;
-INSERT INTO `svjetlo` VALUES (1,'ok',1,0,75),(2,'ok',1,1,75),(3,'ok',1,1,75),(4,'ok',1,1,75),(5,'ok',1,1,75),(6,'kvar',2,0,75),(7,'popravak',2,1,75),(8,'ok',2,1,75),(9,'ok',2,0,75),(10,'Disconnected',1,0,75),(11,'Disconnected',1,0,75),(12,'Disconnected',1,0,75);
+INSERT INTO `svjetlo` VALUES (1,'ok',1,0,90),(2,'ok',1,1,90),(3,'ok',1,1,90),(4,'ok',1,1,90),(5,'ok',1,1,90),(6,'kvar',2,0,0),(7,'popravak',2,1,0),(8,'ok',2,1,90),(9,'ok',2,0,90),(10,'Disconnected',1,0,0),(11,'Disconnected',1,0,0),(12,'Disconnected',1,0,0),(13,'Disconnected',2,0,0),(14,'Disconnected',2,0,0);
 /*!40000 ALTER TABLE `svjetlo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `zona` (
   `ime` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,9 +122,13 @@ CREATE TABLE `zona` (
 
 LOCK TABLES `zona` WRITE;
 /*!40000 ALTER TABLE `zona` DISABLE KEYS */;
-INSERT INTO `zona` VALUES (1,'Zona1'),(2,'Zona2'),(3,'Zona3'),(4,'neka zona'),(8,'test1'),(9,'test2'),(10,'Bla bla');
+INSERT INTO `zona` VALUES (1,'Zona1'),(2,'Zona2'),(3,'Zona3'),(4,'neka zona'),(8,'test1'),(9,'test2'),(10,'Bla bla'),(11,'testtt');
 /*!40000 ALTER TABLE `zona` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'rasvjetadb'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -135,4 +139,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-27 23:16:12
+-- Dump completed on 2023-01-28  2:04:09
